@@ -29,7 +29,7 @@ async function start(){
     const object=new T.Group();scene.add(object);
     const faces=[];
     const segmentCount=small?9:15,fullWidth=3.85,fullHeight=5.2;
-    const material=new T.MeshStandardMaterial({color:0xffffff,roughness:.87,metalness:.05,side:T.DoubleSide,transparent:true});
+    const material=new T.MeshStandardMaterial({color:0xffffff,roughness:.87,metalness:.05,side:T.DoubleSide,transparent:true,opacity:0});
     for(let i=0;i<segmentCount;i++){
       const w=fullWidth/segmentCount;
       const geo=new T.PlaneGeometry(w,fullHeight,1,24);
@@ -71,10 +71,10 @@ async function start(){
         if(token!==request){texture.dispose();return}
         texture.colorSpace=T.SRGBColorSpace;
         texture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
-        const old=currentTexture;currentTexture=texture;material.map=texture;material.needsUpdate=true;
+        const old=currentTexture;currentTexture=texture;material.map=texture;material.opacity=1;material.needsUpdate=true;
         if(old)old.dispose();
         if(window.gsap){
-          window.gsap.fromTo(faces,{z:(i)=>Math.cos(i)*.35,rotationY:(i)=>Math.sin(i*.56)*.16},{z:0,rotationY:0,duration:.8,stagger:{each:.025,from:'center'},ease:'expo.out',overwrite:true});
+          faces.forEach((piece,i)=>{window.gsap.fromTo(piece.position,{z:Math.cos(i)*.35},{z:Math.sin(i*.8)*.055,duration:.8,delay:i*.015,ease:'expo.out',overwrite:true});window.gsap.fromTo(piece.rotation,{y:Math.sin(i*.56)*.16},{y:0,duration:.8,delay:i*.015,ease:'expo.out',overwrite:true});});
         }
         stage.classList.add('three-ready');
       },undefined,()=>{stage.classList.remove('three-ready')});
@@ -113,7 +113,7 @@ async function start(){
     function run(){if(!frame&&visible&&motion&&!document.hidden)frame=requestAnimationFrame(render)}
     window.CautionScene={
       setLook,
-      setMotion(enabled){motion=enabled;if(enabled)run();else cancelAnimationFrame(frame)}
+      setMotion(enabled){motion=enabled;if(enabled)run();else{cancelAnimationFrame(frame);frame=0}}
     };
     window.CautionOnSceneReady?.();
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)run()});
