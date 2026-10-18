@@ -1,0 +1,14 @@
+{
+  "name": "caution-co-void",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run test && tailwindcss -i ./tailwind.input.css -o ./tailwind.css --minify",
+    "dev": "tailwindcss -i ./tailwind.input.css -o ./tailwind.css --watch",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.13",
+    "@tailwindcss/cli": "^4.1.13"
+  }
+}
