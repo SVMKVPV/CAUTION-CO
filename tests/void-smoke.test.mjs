@@ -6,10 +6,10 @@ import { Script } from 'node:vm';
 const html=readFileSync('index.html','utf8');
 const script=readFileSync('app.js','utf8');
 const css=readFileSync('void.css','utf8');
-const getIds=()=>[...html.matchAll(/\\bid="([^"]+)"/g)].map(x=>x[1]);
+const getIds=()=>[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);
 
 test('five sequential chapters, unique IDs and accessible landmarks',()=>{
-  assert.deepEqual([...html.matchAll(/data-chapter="(\\d+)"/g)].map(x=>x[1]),['01','02','03','04','05']);
+  assert.deepEqual([...html.matchAll(/data-chapter="(\d+)"/g)].map(x=>x[1]),['01','02','03','04','05']);
   const ids=getIds();assert.equal(new Set(ids).size,ids.length,'duplicate ID');
   for(const id of ['top','void','materialized','manifesto','drop','night','finale','three-stage','productGrid','filters','productDialog','checkoutDialog','bag','newsletterForm'])
     assert.ok(ids.includes(id),id+' is missing');
