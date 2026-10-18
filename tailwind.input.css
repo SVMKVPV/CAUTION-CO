@@ -1,0 +1,7 @@
+@import "tailwindcss" source(none);
+@source "./index.html";
+@theme {
+  --color-void: #060709;
+  --color-signal: #dfff38;
+  --color-signal-violet: #a468ff;
+}
